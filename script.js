@@ -1,22 +1,30 @@
-let btn = document.getElementById('add');
+const task = [];
+const list = document.getElementById('list');
 
-btn.addEventListener('click', function () {
-    let text = document.getElementById('task').value;
-    let newElement = document.createElement('li');
-    newElement.innerText = text;
-    newElement.classList.add('task-value');
-
-    document.querySelector('ul').append(newElement);
+document.getElementById('add').addEventListener('click', function () {
+    let taskName = document.getElementById('task').value;
+    task.push(taskName);
+    update();
     document.getElementById('task').value = '';
-
-    newElement.addEventListener('click', () => {
-        newElement.classList.toggle('active');
-    });
-
-    // let reset = document.createElement('button');
-    // reset.textContent = 'remove'
-    // reset.classList.add('task-btn')
-    //
-    // document.querySelectorAll('.task-value').append(reset);
-
 });
+
+document.querySelector('ul').addEventListener('click', (event) => {
+    if (event.target.tagName === 'LI') {
+        event.target.classList.toggle('highlight');
+    }
+    if (event.target.tagName === 'BUTTON') {
+        task.splice(event.target.id, 1);
+        update();
+    }
+});
+
+function update() {
+    let li = '';
+    let id = 0;
+    task.forEach((value) => {
+        li += `<li> ${value} <button id = ${id++}>remove</button> </li>`;
+    })
+    list.innerHTML = `<ul> ${li} </ul>`;
+}
+
+
